@@ -180,8 +180,6 @@ function saludar() {
 saludar(); // Ejecuta la función
 ```
 
-### 06 Function Expression
-
 Funciones de expresión (función anónima asignada a una variable)
 ```js
 const resta = function(a, b) {
@@ -236,20 +234,135 @@ function crearContador() {
 const contar = crearContador();
 console.log(contar()); // 1
 console.log(contar()); // 2
-
 ```
+
+### 06. Array methods
+
+Añadir y eliminar elementos
 ```js
+// push() → Añade al final
+numeros.push(6); // [1,2,3,4,5,6]
 
+// pop() → Elimina el último
+numeros.pop(); // [1,2,3,4,5]
+
+// unshift() → Añade al inicio
+numeros.unshift(0); // [0,1,2,3,4,5]
+
+// shift() → Elimina el primero
+numeros.shift(); // [1,2,3,4,5]
 ```
+
+Buscar elementos
 ```js
+// indexOf() → Devuelve el índice del elemento
+numeros.indexOf(3);
 
+// includes() → Verifica si existe
+numeros.includes(4);
 ```
+
+Recorrer arrays
 ```js
+// forEach() → Ejecuta una función por cada elemento
+numeros.forEach(n => console.log(n));
 
+// map() → Crea un nuevo array transformado
+let dobles = numeros.map(n => n * 2); // [2,4,6,8,10]
+
+
+// filter() → Filtra elementos que cumplen una condición
+let pares = numeros.filter(n => n % 2 === 0); // [2,4]
+
+// find() → Devuelve el primer elemento que cumple la condición
+let mayorQue3 = numeros.find(n => n > 3); // 4
+
+// some() / every() → Comprueban condiciones
+numeros.some(n => n > 4);  // true
 ```
+
+Transformar arrays
 ```js
+// reduce() → Acumula valores
+let suma = numeros.reduce((acc, n) => acc + n, 0); // 15
 
+// concat() → Une arrays
+let mas = numeros.concat([6,7]); // [1,2,3,4,5,6,7]
+
+// join() → Convierte en string
+numeros.join(" - "); // "1 - 2 - 3 - 4 - 5"
+
+// slice() → Extrae una parte (sin modificar)
+numeros.slice(1, 3); // [2,3]
+
+// sort() → Ordena el array
+numeros.sort((a,b) => a-b); // orden ascendente
+
+// reverse() → Invierte el orden
+numeros.reverse(); // [5,4,3,2,1]
+
+// splice() → Añade o elimina en posiciones específicas
+numeros.splice(2,1); // Elimina 1 elemento en índice 2 → [1,2,4,5]
 ```
+
+### 07. Desestructuración de arrays
+
+La desestructuración permite extraer valores de un array y asignarlos a variables de manera sencilla y legible.
+
 ```js
+let numeros = [10, 20, 30];
+let [a, b, c] = numeros;
 
+console.log(a); // 10
+console.log(b); // 20
+console.log(c); // 30
 ```
+
+Saltar elementos, puedes omitir posiciones dejando comas vacías
+```js
+let [primero, , tercero] = numeros;
+console.log(primero, tercero)
+```
+
+Valores por defecto, si el array no tiene suficientes elementos, se pueden asignar valores por defecto:
+```js
+let [x, y, z = 100] = [1, 2];
+console.log(z); // 100
+```
+
+Rest operator (...), permite agrupar el resto de los elementos en un array:
+```js
+let [p, q, ...resto] = [1, 2, 3, 4, 5];
+console.log(resto); // [3,4,5]  
+```
+
+### 08. Recorrido de Arrays
+
+El bucle for clásico es una de las formas más usadas para recorrer arrays.
+Permite acceder a cada elemento utilizando su índice.
+
+```js
+let numeros = [10, 20, 30, 40];
+
+for (let i = 0; i < numeros.length; i++) {
+  console.log(`Índice ${i}: Valor ${numeros[i]}`);
+}
+```
+
+for...of → Itera sobre valores directamente
+```js
+for (let num of numeros) {
+  console.log(num);
+}
+// 10, 20, 30, 40
+```
+
+for...in → Itera sobre índices
+```js
+for (let i in numeros) {
+  console.log(`Índice ${i} → Valor ${numeros[i]}`);
+}
+// Índice 0 → Valor 10 ...
+```
+
+Otos métodos modernos de arrays (forEach, map, filter...) ya vistos
