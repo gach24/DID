@@ -366,3 +366,194 @@ for (let i in numeros) {
 ```
 
 Otos métodos modernos de arrays (forEach, map, filter...) ya vistos
+
+
+### 09. Módulos
+- Los módulos permiten dividir el código en archivos reutilizables.
+- Ayudan a organizar proyectos grandes y a mantener un código más limpio y mantenible.
+- Cada archivo de JavaScript puede considerarse un módulo.
+
+Un módulo puede exportar variables, funciones, clases u objetos para que otros módulos las usen.
+```js
+// archivo math.js
+export const PI = 3.1416;
+
+export function suma(a, b) {
+  return a + b;
+}
+
+// exportación por defecto (solo una por archivo)
+export default function resta(a, b) {
+  return a - b;
+}
+```
+
+Se utiliza import para usar lo exportado en otro archivo
+```js
+import resta, { PI, suma } from "./math.js";
+
+console.log(PI);        // 3.1416
+console.log(suma(2, 3)); // 5
+console.log(resta(5, 2)); // 3
+```
+
+### 10. Promesas
+
+- Una Promesa es un objeto que representa la eventual finalización (o fallo) de una operación asíncrona
+- Se utiliza para trabajar con procesos que no se resuelven inmediatamente, como llamadas a APIs, lectura de archivos o temporizadores.
+
+Una promesa puede estar en uno de estos estados:
+1. pending (pendiente): estado inicial, ni cumplida ni rechazada.
+2. fulfilled (resuelta): la operación se completó con éxito.
+3. rejected (rechazada): la operación falló.
+
+Sintaxis básica:
+```js
+const miPromesa = new Promise((resolve, reject) => {
+  let exito = true;
+
+  if (exito) {
+    resolve("La operación fue exitosa");
+  } else {
+    reject("Hubo un error en la operación");
+  }
+});
+```
+
+Consumo:
+1. then() → se ejecuta cuando la promesa se cumple.
+2. catch() → se ejecuta si ocurre un error (rechazo).
+3. finally() → se ejecuta siempre, haya éxito o error.
+
+```js
+miPromesa
+  .then(resultado => console.log(resultado))
+  .catch(error => console.error(error))
+  .finally(() => console.log("Proceso terminado"));
+```
+
+Ejemplo:
+```js
+function obtenerDatos() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const datos = ["JS", "TS", "React"];
+      if (datos.length > 0) {
+        resolve(datos);
+      } else {
+        reject("No se encontraron datos");
+      }
+    }, 2000);
+  });
+}
+
+obtenerDatos()
+  .then(lista => console.log("Datos:", lista))
+  .catch(err => console.error(err));
+```
+
+Métodos utiles
+- Promise.all([p1, p2, ...]) → espera que todas las promesas se cumplan (o una falle).
+- Promise.race([p1, p2, ...]) → devuelve el resultado de la primera promesa que se resuelva o rechace.
+- Promise.any([p1, p2, ...]) → devuelve la primera promesa que se cumpla (ignora rechazos).
+- Promise.allSettled([p1, p2, ...]) → espera a que todas finalicen, sin importar si fallan o se cumplen.
+
+### 11. async/await
+
+- async/await es una sintaxis más sencilla para trabajar con Promesas
+- Permite escribir código asíncrono con un estilo más parecido al sincrónico, lo que facilita la lectura y el mantenimiento.
+
+La palabra clave async
+- Una función declarada con async devuelve siempre una Promesa.
+- Si la función retorna un valor, este se envuelve automáticamente en una Promesa resuelta
+
+```js
+async function saludo() {
+  return "Hola Mundo";
+}
+
+saludo().then(msg => console.log(msg)); // Hola Mundo
+```
+
+La palabra clave await
+- await se usa dentro de funciones async.
+- Detiene la ejecución de la función hasta que la promesa se resuelva o rechace.
+
+```js
+function obtenerNumero() {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(42), 5000);
+  });
+}
+
+async function mostrarNumero() {
+  const numero = await obtenerNumero();
+  console.log("El número es:", numero);
+}
+
+mostrarNumero();
+```
+
+### 12. Fetch
+- fetch es una función nativa de JavaScript para realizar peticiones HTTP
+- Devuelve una Promesa que se resuelve con un objeto Response
+
+Sintaxis básica
+```js
+fetch(url, opciones)
+  .then(respuesta => {
+    // La respuesta hay que procesarla
+  })
+  .catch(error => console.error(error));
+```
+
+Ejemplo con promesas
+```js
+fetch("https://jsonplaceholder.typicode.com/posts/1")
+  .then(respuesta => respuesta.json())   // Convertimos a JSON
+  .then(datos => console.log(datos))     // Usamos los datos
+  .catch(error => console.error("Error:", error));
+```
+
+Ejemplo con async/await
+```js
+async function obtenerPost() {
+  try {
+    const respuesta = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+    const datos = await respuesta.json();
+    console.log("Post:", datos);
+  } catch (error) {
+    console.error("Error al cargar:", error);
+  }
+}
+
+obtenerPost();
+
+```
+
+Se pueden pasar configuraciones adicionales, como método, cabeceras o cuerpo de la petición:
+```js
+async function crearPost() {
+  try {
+    const respuesta = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title: "Nuevo post",
+        body: "Este es el contenido",
+        userId: 1
+      })
+    });
+
+    const datos = await respuesta.json();
+    console.log("Post creado:", datos);
+  } catch (error) {
+    console.error("Error en la creación:", error);
+  }
+}
+
+crearPost();
+
+```
