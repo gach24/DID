@@ -1,0 +1,18 @@
+{
+  "name": "01-ejemplo",
+  "version": "1.0.0",
+  "description": "1. Instalar [Nodejs](https://nodejs.org/es)   2. Crear la carpeta del proyecto 3. Inicializar el proyecto de nodo ```sh npm init ``` 3.   Crear el fichero index.html",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tailwind": "npx @tailwindcss/cli -i ./css/tailwind.css -o ./css/style.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "tailwindcss": "^4.1.14"
+  }
+}
