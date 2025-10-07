@@ -1,16 +1,28 @@
-# React + Vite
+# GUITARS APP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## COMPONENTES
 
-Currently, two official plugins are available:
+- Un componente en react es básicamente html y js en un solo archivo
+- React utiliza componentes para la creación de sitios web
+- App.jsx es un componente pero demasiado grande
+- Normalmente dividiremos los componentes grandes en pequeños componentes reutilizables si es posible
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**_Creación del primer componente_**
 
-## React Compiler
+- Creamos el componente `Header`
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## REGLAS DEL JSX
 
-## Expanding the ESLint configuration
+- A diferencia del HTML, que no es estricto, en JSX si un elemento HTML tiene una etiqueta de apertura deberá tener su etiquieta de cierre
+- Cada component debe tener un `return` y solo puede devolver un elemento (este elemento puede contener otros elementos)
+- No se permite la palabra reservada **class**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+**_Eliminación de errores_**
+
+- Sustituimos la palabra **class** por **className**
+
+**_Creación del componente para la guitarra_**
+
+- Creamos el componente en la carpeta de `components`
+- Copiamos el código html de una de las guitarras en el componente
+- Utilizamos el componente y eliminamos el resto de guitarras
