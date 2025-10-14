@@ -1,7 +1,15 @@
+import { useState, useEffect } from 'react';
 import { Guitar } from './components/Guitar';
 import { Header } from './components/Header';
+import { db } from './data/db';
 
 const App = () => {
+  const [guitars, setGuitars] = useState([]);
+  useEffect(() => {
+    console.log(`Cargando datos de guitarras...${guitars.length}`);
+    setGuitars(db);
+  }, [guitars]);
+
   return (
     <>
       <Header />
@@ -9,7 +17,9 @@ const App = () => {
         <h2 className="text-center">Nuestra Colección</h2>
 
         <div className="row mt-5">
-          <Guitar />
+          {guitars.map((guitar) => (
+            <Guitar key={guitar.id} guitar={guitar} />
+          ))}
         </div>
       </main>
 

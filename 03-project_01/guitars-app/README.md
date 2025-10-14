@@ -20,9 +20,197 @@
 **_Eliminación de errores_**
 
 - Sustituimos la palabra **class** por **className**
+- Buscamos en todo el proyecto `/public/img/...` y quitamos `/public`
 
 **_Creación del componente para la guitarra_**
 
 - Creamos el componente en la carpeta de `components`
 - Copiamos el código html de una de las guitarras en el componente
 - Utilizamos el componente y eliminamos el resto de guitarras
+
+## QUE ES EL STATE
+
+El estado es una variable con información relevante en nuestra aplicación de React, algunas veces el state forma parte de un componente en específico o algunas veces deseas compartirlo a lo largo de diferentes componentes
+
+Cada vez que tu _state_ cambia, tu aplicación de React va a renderizar y actualizarse con los cambios, no es necesario nada más y tu interfaz siempre estará sincronizada con el _state_
+
+**_Hook: useState_**
+
+```jsx
+import { useState } from 'react'
+
+...
+
+const [customer, setCustomer] = useState({});
+const [total, setTotal] = useState(0);
+const [products, setProducts] = useState([]);
+const [modal, setModal] = useState(false);
+```
+
+**\_Utilización del useState en el proyecto**
+
+- En el `App.jsx` importamos el hook `useState`
+- Utilizamos el `useState` en nuestra función del `jsx`
+
+```jsx
+import { useState } from 'react';
+
+...
+
+const App = () => {
+  const [products, setProducts] = useState([]);
+
+  return (
+    <>
+        ...
+    </>
+  );
+};
+
+export default App;
+```
+
+- Vemos los components y hooks en la herramienta React Devoloper Tools
+
+## HOOKS
+
+**_Reglas de los hooks_**
+
+- Los hooks se colocan en la parte superior de tus componentes de React.
+- No se deben colocar dentro de condicionales
+
+**_Hook: useEffect_**
+
+- Después del de `useState` es el más común
+- Siempre tienen un `callback`
+- Use effect se ejecuta automáticamente cuando el componentes está listo, es un buen lugar para colocar código de consulta a alguna API o al LocalStorage
+- Debido a que le podemos pasar una dependencia y estar escuchando por los cambios que sucendan en una variable, puede actualizar el componente cuando el cambio suceda
+
+```jsx
+import { useEffect } from 'react';
+
+...
+
+useEffect(() => {
+  console.log('Componente listo');
+}, []);
+```
+
+**\_Utilización del useEffect en el proyecto**
+
+- Añadimos al proyecto el archivo db del material de inicio
+- En el archivo `App.jsx` importamos el fichero y lo mostramos mediante un `console.log(...)`
+- Utilizamos un `useState` para almacenar las guitarras
+- Utilizamos un `useEffect` para añadir las guitarras al estado
+
+```jsx
+import { useState, useEffect } from 'react';
+import { db } from './data/db';
+...
+
+const App = () => {
+  const [guitars, setGuitars] = useState([]); // Inicializacíón vacía
+  useEffect(() => {
+    console.log(`Cargando datos de guitarras...${guitars.length}`);
+    setGuitars(db);
+  }, [guitars]); // Cargamos las guitarras cuando el componente esté listo
+
+  return <>...</>;
+};
+
+export default App;
+```
+
+## ITERACIONES.
+
+- Vamos a mostrar las guitarras
+- Para mostrar todos las guitarras vamos a utilizar un map
+
+```jsx
+import { useState, useEffect } from 'react';
+...
+
+const App = () => {
+  ...
+
+  return (
+    <>
+      ...
+      <main className="container-xl mt-5">
+        ...
+
+        <div className="row mt-5">
+          {guitars.map((guitar) => (
+            <Guitar key={guitar.id} />
+          ))}
+        </div>
+      </main>
+
+      ...
+    </>
+  );
+};
+
+export default App;
+```
+
+- **Nota**: Como se puede observar se muestrán la misma guitarra 13 veces
+
+## PROPS
+
+- Los props es una forma de compartir información entre componentes
+- Puedes pasar información desde el componente padre hacia el hijo por medio de props
+- Los Props son muy similiares a los atributos en html, pero puedes pasar arreglos, objetos o también funciones
+- Si tienes un state que se va a pasar por diferentes componentes, lo mejor es colocarlo en el archivo principal
+- Cada nivel de componentes deberá tomar y pasar el Prop hacia otros componentes
+- Tecnologías como Redux, Zustand, Jotai o Context evitan tener que hacerlo de esta forma
+
+**_Implementando Props en nuestro proyecto_**
+
+- En el componente `<Guitar >` debemos recibir como parámetro los props
+
+```jsx
+export const Guitar = (props) => {
+  console.log(props)
+  return (
+    ...
+  );
+};
+```
+
+- En el `App.jsx` le enviamos los props como atributo
+
+```jsx
+
+...
+        <div className="row mt-5">
+          {guitars.map((guitar) => (
+            <Guitar key={guitar.id} guitar={guitar} />
+          ))}
+        </div>
+ ...
+```
+
+- Ahora en el componente `<Guitar ...>` puedo sustituir los valores
+
+```jsx
+export const Guitar = ({ guitar }) => {
+  const { name, image, description, price } = guitar;
+
+  return (
+    <div className="col-md-6 col-lg-4 my-4 row align-items-center">
+      <div className="col-4">
+        <img className="img-fluid" src={`/img/${image}.jpg`} alt={name} />
+      </div>
+      <div className="col-8">
+        <h3 className="text-black fs-4 fw-bold text-uppercase">{name}</h3>
+        <p>{description}</p>
+        <p className="fw-black text-primary fs-3">${price}</p>
+        <button type="button" className="btn btn-dark w-100">
+          Agregar al Carrito
+        </button>
+      </div>
+    </div>
+  );
+};
+```
