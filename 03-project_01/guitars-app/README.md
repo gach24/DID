@@ -214,3 +214,102 @@ export const Guitar = ({ guitar }) => {
   );
 };
 ```
+
+## EVENTOS
+
+- La forma en la que React manaja los eventos es muy similar a como lo hace JavaScript de forma nativa con algunos cambios
+- Los eventos son **camelCase**, es decir en lugar de _onchange_ se utiliza _onChange_, en lugar de _onclick_ se utiliza _onClick_
+- También a diferencia de JS y HTML, donde se coloca el nombre de la función en un string en React (JSX) se utiliza la función entre llaves
+  `{}`
+
+En html:
+
+```html
+<button onclick="getLatestOrders()">Descargar pedidos</button>
+```
+
+En jsx:
+
+```jsx
+<button onClick={() => getLatestOrders()}>Descargar pedidos</button>
+```
+
+**\_Implementando el primer evento en nuestro proyecto**
+
+- Registramos el evento `onClick` dentro del botón nuestro componente `Guitar.jsx`
+
+```jsx
+export const Guitar = ({ guitar }) => {
+  ...
+
+  const handleClick = () => {
+    console.log('Cliked ...');
+  };
+
+  return (
+    <div className="col-md-6 col-lg-4 my-4 row align-items-center">
+        ...
+        <button type="button" className="btn btn-dark w-100" onClick={handleClick}>
+          Agregar al Carrito
+        </button>
+      </div>
+    </div>
+  );
+};
+```
+
+- Comprobación en la consola
+- Añadimos el identificador de la guitarra al evento
+
+```jsx
+export const Guitar = ({ guitar }) => {
+  const { id, name, image, description, price } = guitar;
+
+  const handleClick = (id) => {
+    console.log(`Cliked en la guitarra con id: ${id}`);
+  };
+
+  return (
+    ...
+        <button
+          type="button"
+          className="btn btn-dark w-100"
+          // onClick={handleClick(id)} NO FUNCIONA
+          onClick={() => handleClick(id)}
+        >
+          Agregar al Carrito
+        </button>
+    ...
+  );
+};
+```
+
+- Creamos un **state** del carrito dentro del `App.jsx`
+
+```jsx
+...
+const App = () => {
+  const [guitars, setGuitars] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  ...
+
+  return (
+    <>
+      ...
+      <main className="container-xl mt-5">
+        ...
+        <div className="row mt-5">
+          {guitars.map((guitar) => (
+            <Guitar key={guitar.id} guitar={guitar} setCart={setCart} />
+          ))}
+        </div>
+      </main>
+
+      ...
+    </>
+  );
+};
+
+export default App;
+```

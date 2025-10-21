@@ -5,10 +5,15 @@ import { db } from './data/db';
 
 const App = () => {
   const [guitars, setGuitars] = useState([]);
+  const [cart, setCart] = useState([]);
+
   useEffect(() => {
-    console.log(`Cargando datos de guitarras...${guitars.length}`);
     setGuitars(db);
   }, [guitars]);
+
+  const addToCart = (guitar) => {
+    setCart([...cart, guitar]);
+  };
 
   return (
     <>
@@ -18,7 +23,7 @@ const App = () => {
 
         <div className="row mt-5">
           {guitars.map((guitar) => (
-            <Guitar key={guitar.id} guitar={guitar} />
+            <Guitar guitar={guitar} addToCart={addToCart} key={guitar.id} />
           ))}
         </div>
       </main>
