@@ -1,40 +1,69 @@
-import { useState, useEffect } from 'react';
-import { Guitar } from './components/Guitar';
-import { Header } from './components/Header';
+import { useEffect, useState } from 'react';
+
+import { Guitar, Header, Footer } from './components/';
+
 import { db } from './data/db';
 
-const App = () => {
-  const [guitars, setGuitars] = useState([]);
-  const [cart, setCart] = useState([]);
+const MAX_COUNT_GUITARS = 10;
 
-  useEffect(() => {
-    setGuitars(db);
-  }, [guitars]);
+const initialData = JSON.parse(localStorage.getItem('cart')) ?? [];
+
+const App = () => {
+  const [guitars]    = useState(db);
+  const [cart, setCart] = useState(initialData);
+
+  useEffect(() => { localStorage.setItem('cart', JSON.stringify(cart)) }, [cart]);
 
   const addToCart = (guitar) => {
-    setCart([...cart, guitar]);
+    cart.some((item) => item.id === guitar.id) ?       
+      setCart(
+          cart.map((item) =>
+            item.id === guitar.id && item.quantity < MAX_COUNT_GUITARS
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        ) 
+      : 
+      setCart([...cart, { ...guitar, quantity: 1 }]);
   };
+
+  const delFromCart = (id) => {
+    setCart(cart.filter((item) => item.id !== id));
+  }
+
+  const updateQuantity = (id, delta) => {
+    setCart(
+      cart.map((item) =>
+        item.id === id && item.quantity + delta >= 1 && item.quantity + delta <= MAX_COUNT_GUITARS
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
+    save();
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  }
 
   return (
     <>
-      <Header />
+      <Header cart={cart} 
+        delFromCart={delFromCart} 
+        updateQuantity={updateQuantity} 
+        clearCart={clearCart} />
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
 
+        {/* Guitars List */}
         <div className="row mt-5">
           {guitars.map((guitar) => (
             <Guitar guitar={guitar} addToCart={addToCart} key={guitar.id} />
           ))}
         </div>
-      </main>
 
-      <footer className="bg-dark mt-5 py-5">
-        <div className="container-xl">
-          <p className="text-white text-center fs-4 mt-4 m-md-0">
-            GuitarLA - Todos los derechos Reservados
-          </p>
-        </div>
-      </footer>
+      </main>
+      <Footer />
     </>
   );
 };

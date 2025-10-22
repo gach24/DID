@@ -287,12 +287,15 @@ export const Guitar = ({ guitar }) => {
 - Creamos un **state** del carrito dentro del `App.jsx`
 
 ```jsx
-...
-const App = () => {
-  const [guitars, setGuitars] = useState([]);
-  const [cart, setCart] = useState([]);
 
+// App.jsx
+const App = () => {
   ...
+  const [cart, setCart] = useState([]);
+  ...
+  const addToCart = (guitar) => {
+    setCart([...cart, guitar]);
+  };
 
   return (
     <>
@@ -301,7 +304,7 @@ const App = () => {
         ...
         <div className="row mt-5">
           {guitars.map((guitar) => (
-            <Guitar key={guitar.id} guitar={guitar} setCart={setCart} />
+            <Guitar key={guitar.id} guitar={guitar} setCart={addToCart} />
           ))}
         </div>
       </main>
@@ -311,5 +314,131 @@ const App = () => {
   );
 };
 
-export default App;
+
+// Guitar.jsx
+
+export const Guitar = ({ guitar, addToCart }) => {
+  ...
+
+  const handleClick = (guitar) => {
+    addToCart(guitar);
+  };
+
+  return (
+    <div className="col-md-6 col-lg-4 my-4 row align-items-center">
+        ...
+        <button type="button" className="btn btn-dark w-100" onClick={() => handleClick(guitar)}>
+          Agregar al Carrito
+        </button>
+      </div>
+    </div>
+  );
+};
+```
+
+- Si lo hacemos de esta manera podremos introducir una validación u otro código auxiliar
+
+```jsx
+export const App = () => {
+  ...
+
+  const addToCart = (guitar) => {
+    cart.findIndex(item => item.id === guitar.id) === -1 
+      && setCart([...cart, guitar]);
+  };
+
+  return (
+    ...
+  );
+};
+```
+
+- Si lo que queremos es actualizar el carrito, deberíamos hacer algo como esto
+
+```jsx
+export const App = () => {
+  ...
+
+  const addToCart = (guitar) => {
+    cart.some((item) => item.id === guitar.id) ?       
+      setCart(
+          cart.map((item) =>
+            item.id === guitar.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        ) 
+      : 
+      setCart([...cart, { ...guitar, quantity: 1 }]);
+  };
+
+  return (
+    ...
+  );
+};
+```
+
+## TAREA
+1. Mostar el contenido del carrito
+
+
+## Calculo del total del carrito
+- Para el cálculo del total vamos a utilizar una función que devuelva el total del precio unitario por la cantidad de cada uno de los elementos del carrito.
+
+- Se puede hacer de muchas maneras pero la función `reduce()` se ajusta bastante bien a este caso
+
+- Realizamos la modificación dentro del componente `header.jsx`
+
+```jsx
+export const Header = ({cart}) => {
+
+  const getTotal = () => {
+    return cart.reduce((total, {price, quantity}) => total + (price * quantity), 0);
+  }
+
+  return (
+      ...
+      <p className="text-end">
+        Total pagar: <span className="fw-bold">${getTotal()}</span>
+      </p>
+      ...
+  );
+};
+
+```
+
+## Tarea borrar un elemento del carrito
+
+## Tarea aumentar o disminuir en 1 la cantidad de un elemento del carrito
+
+## Tarea borrar el carrito
+
+
+## Como añadir presistencia
+- En este punto vamos a añadir persistencia sin tener que recurrir a bases de datos o a cookies, lo que vamos ha hacer es utilizar el **localStorage** para almacener datos dentro del navegador
+- Esta es una herramienta que se utiliza para que las aplicaciones puedan interactuar con información persistente en el cliente.
+- En el contexto del desarrollo de aplicaciones, el almacenamiento local permite que un componente recuerde información entre sesiones
+Funcionamiento y Uso de localStorage
+  1. Almacenamiento de Datos: Para almacenar un valor en el almacenamiento local, se utiliza la función **localStorage.setItem()**, acompañada de un identificador (clave) y el valor a guardar.
+  2. Recuperación de Datos: Para recuperar un valor almacenado, se utiliza la función **localStorage.getItem()**, pasando la clave correspondiente
+
+- Lo lógico en nuestro ejercicio sería crear una función que nos almacene en el **localStorage**
+y llamarla siempre que modifiquemos el state. Pero esto no funciona del todo bien ya que el stage es asíncrono
+
+- La solución más correcta es hacerlo mediante un `useEffect`
+
+```jsx
+...
+const initialData = JSON.parse(localStorage.getItem('cart')) ?? [];
+
+const App = () => {
+  ...
+  const [cart, setCart] = useState(initialData);
+  ...
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+  ...
+  return (...);
+};
 ```
