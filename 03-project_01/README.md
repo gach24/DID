@@ -1,5 +1,70 @@
 # PASOS
 
+## 🧩 Instalación y configuración de Prettier en Visual Studio Code
+
+
+### 1. Instalar la extensión de Prettier en VS Code
+
+1. Abre **Visual Studio Code**.  
+2. En la barra lateral izquierda, haz clic en el **icono de extensiones** (o presiona `Ctrl + Shift + X`).  
+3. Busca **"Prettier - Code formatter"** (autor: *Prettier*).  
+4. Haz clic en **Instalar**.
+
+---
+
+### 2. Instalar Prettier en tu proyecto (recomendado)
+
+Aunque VS Code tiene la extensión, es mejor tener Prettier instalado localmente en tu proyecto para mantener la misma versión entre todos los desarrolladores.
+
+Ejecuta en la terminal:
+
+```bash
+npm install --save-dev prettier
+```
+
+### 3. Crear archivo de configuración .prettierrc
+
+En la raíz de tu proyecto, crea un archivo llamado .prettierrc con el siguiente contenido:
+
+```js
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 80
+}
+
+``` 
+
+### 4. Configurar VS Code para usar Prettier por defecto
+
+Abre la configuración de VS Code (Ctrl + ,) y busca:
+
+"Default Formatter" → selecciona: esbenp.prettier-vscode
+
+O añade esta configuración en .vscode/settings.json:
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
+```
+
+---
+
+## 2. Instalar Prettier en tu proyecto (recomendado)
+
+Aunque VS Code tiene la extensión, es mejor tener Prettier instalado localmente en tu proyecto para mantener la misma versión entre todos los desarrolladores.
+
+Ejecuta en la terminal:
+
+```bash
+npm install --save-dev prettier
+
+
+
 ## Extensiones que podemos instalar de VSC
 
 - [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
