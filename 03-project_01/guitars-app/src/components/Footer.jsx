@@ -1,3 +1,10 @@
+/**
+ * Componente Footer de la aplicación
+ * Muestra el pie de página con información de copyright
+ * 
+ * @component
+ * @returns {JSX.Element} Footer con información de derechos reservados
+ */
 export const Footer = () => {
   return (
     <footer className="bg-dark mt-5 py-5">

@@ -1,8 +1,26 @@
+/**
+ * Componente que muestra la información de una guitarra individual
+ * Incluye imagen, nombre, descripción, precio y botón para agregar al carrito
+ * 
+ * @component
+ * @param {Object} props.guitar - Objeto con la información de la guitarra
+ * @param {Function} props.addToCart - Función para agregar la guitarra al carrito
+ * @returns {JSX.Element} Tarjeta de guitarra con información y botón de compra
+ */
 export const Guitar = ({ guitar, addToCart }) => {
 
-  
-  const { id, name, image, description, price } = guitar;
+  /**
+   * Destructuración de las propiedades de la guitarra
+   * para acceso más sencillo en el componente
+   */
+  const { name, image, description, price } = guitar;
 
+  /**
+   * Manejador de evento para el botón de agregar al carrito
+   * Llama a la función addToCart con el objeto guitar completo
+   * 
+   * @param {Object} guitar - Objeto de la guitarra a agregar
+   */
   const handleClick = (guitar) => {
     addToCart(guitar);
   };

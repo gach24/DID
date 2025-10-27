@@ -442,3 +442,79 @@ const App = () => {
   return (...);
 };
 ```
+
+## Hooks
+
+### Crear tus propios hooks
+- Existe una gran ventaja de crear tus propios **Hooks** y es la de incorporar **State** y otros **Hooks de React** a tu propio código poderlo reutilizar en otros proyectos
+- Otra gran ventaja es la de organizar tu código, de esta forma el hook se encarga de toda la lógica del state mientras que tus componentes solo de mostrar la información
+- Tu código personalizado tendrá todas las ventajas de React como son: state, effects, integrar otros hooks, y el preformance, reutilizable con otros proyectos, fácil de testear
+
+### Como vamos a crear nuestros propios hooks
+Los hooks son funciones de JavaScript pero tienen algunas reglas:
+- Los hooks deben seguir la convención de react `use{hook}` de esta forma **React** escanea tu código en busca de posibles problemas con las reglas de los **hooks**
+
+## Creación del hook ``useCart`
+
+- Creamos una carpeta `hooks` dentro de la raiz de nuestro proyecto, y dentro de ella un ficheor llamado `useCart.js`
+- El fichero deberá tener extensión .js porque contendrá lógica JavaScript, no un componente de React
+- Creamos el **hook** como lo que es, una función de JavaScript, que en la mayoría de los casos devuelve un objeto (aunque no es obligatorio y puede devolver cualquier cosa)
+
+```js
+export const useCart = () => {
+    
+  return {
+
+  }
+}
+```
+
+- Para su importación se hace como cualquier módulo en JavaScript `import { useCart } from './hooks/useCart'`
+
+```js
+import { useEffect, useState } from 'react';
+
+const MAX_COUNT_GUITARS = 10;
+
+const initialData = JSON.parse(localStorage.getItem('cart')) ?? [];
+
+export const useCart = () => {
+
+  const [cart, setCart] = useState(initialData);
+
+  useEffect( ... );
+
+  const addToCart = (guitar) => { ... };
+
+  const delFromCart = (id) => { ... }
+
+  const updateQuantity = (id, delta) => { ... };
+
+  const clearCart = () => { ... }
+  
+  return {
+    cart,
+    addToCart,
+    delFromCart,
+    updateQuantity,
+    clearCart
+  }
+}
+```
+
+- Para importar lo que necesitamos en el App.jsx, unicamente desestructuramos lo que necesitamos
+
+```jsx
+...
+import { useCart } from './hooks/useCart';
+import { db } from './data/db';
+
+const App = () => {
+  const [guitars] = useState(db);
+  const { cart, addToCart, delFromCart, updateQuantity, clearCart } = useCart();
+
+  return ( ... );
+};
+
+...
+```
