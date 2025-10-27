@@ -48,21 +48,28 @@ const App = () => {
 
   return (
     <>
+      { /* Header */ }
       <Header cart={cart} 
         delFromCart={delFromCart} 
         updateQuantity={updateQuantity} 
         clearCart={clearCart} />
+
+      { /* Main Content */ }
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
 
-        {/* Guitars List */}
         <div className="row mt-5">
-          {guitars.map((guitar) => (
-            <Guitar guitar={guitar} addToCart={addToCart} key={guitar.id} />
-          ))}
+          {
+            /* Guitars List */
+            guitars.map((guitar) => (
+              <Guitar guitar={guitar} addToCart={addToCart} key={guitar.id} />
+            ))
+          }
         </div>
 
       </main>
+
+      { /* Footer */ }
       <Footer />
     </>
   );

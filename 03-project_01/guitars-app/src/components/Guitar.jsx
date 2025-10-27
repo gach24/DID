@@ -1,4 +1,6 @@
 export const Guitar = ({ guitar, addToCart }) => {
+
+  
   const { id, name, image, description, price } = guitar;
 
   const handleClick = (guitar) => {
