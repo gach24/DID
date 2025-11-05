@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 
-const MAX_COUNT_GUITARS =  Number(import.meta.env.VITE_MAX_CART_ITEMS) || 15;
+const MAX_COUNT_GUITARS = 10;
 
 const initialData: CartItem[] = JSON.parse(localStorage.getItem('cart') ?? '[]');
 
