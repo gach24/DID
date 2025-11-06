@@ -1,7 +1,0 @@
-dist
-node_modules
-public
-*.min.js
-build
-coverage
-*.lock
