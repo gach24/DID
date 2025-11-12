@@ -159,3 +159,159 @@ describe('Header component', () => {
 });
 ```
 
+## Pruebas del hook `useCounter.ts'
+
+- Creamos la agrupación de pruebas para este hook
+
+```ts
+describe('useCounter Hook', () => {
+  ...
+})
+```
+
+- Comprobación de valores por defecto
+
+```ts
+test('should return the default values', () => {
+  // Act
+  const { result } = renderHook(() => useCounter()); // Necesario para renderizar el hook
+  const { counter } = result.current; // Extracción del valor del counter
+
+  // Assert
+  expect(counter).toBe(0); // Comprabación del valor
+});
+```
+
+- Comprobación del comportamiento con parámetros
+
+```ts
+  test('should initialize counter with given initial value', () => {
+    // Arrange
+    const initialValue = 10;
+
+    // Act
+    const { result } = renderHook(() => useCounter(initialValue));
+    const { counter } = result.current;
+
+    // Assert
+    expect(counter).toBe(initialValue);
+  });
+```
+
+- Comprobación del incremento del contador
+
+```ts
+  test('should increment the counter', () => {
+    // Arrange
+    const { result } = renderHook(() => useCounter());
+    const { increment } = result.current;
+
+    // Act
+    act(() => {
+      increment();
+    });
+    const { counter } = result.current;
+
+    // Assert
+    expect(counter).toBe(1);
+  });
+```
+
+- Comprobación del decremento del contador
+
+```ts
+  test('should decrement the counter', () => {
+    // Arrange
+    const { result } = renderHook(() => useCounter());
+    const { decrement } = result.current;
+
+    // Act
+    act(() => {
+      decrement();
+    });
+    const { counter } = result.current;
+
+    // Assert
+    expect(counter).toBe(-1);
+  });
+```
+
+- Comprobar el reseteo del contador
+
+```ts
+  test('should reset the counter to initial value', () => {
+    // Arrange
+    const initialValue = 5;
+    const { result } = renderHook(() => useCounter(initialValue));
+    const { increment, reset } = result.current;
+
+    // Act
+    act(() => {
+      increment();
+      reset();
+    });
+    const { counter } = result.current;
+
+    // Assert
+    expect(counter).toBe(initialValue);
+  });
+
+```
+
+# Pruebas del componente CounterApp.tsx
+
+- Creamos la agrupación de pruebas para este componente
+
+```ts
+describe('CounterApp tests', () => {
+  ...
+})
+```
+
+- Comporobación de que el componente se renderiza con los valores por defecto
+
+```ts
+  test('should render correctly with default values', () => {
+    // Arrange & Act
+    render(<CounterApp />);
+
+    // Assert
+    expect(screen.getByRole('heading', { level: 1 }).innerHTML).toContain(
+      'Counter: 0'
+    );
+    expect(screen.getByRole('button', { name: '+1' })).toBeDefined();
+    expect(screen.getByRole('button', { name: 'Reset' })).toBeDefined();
+    expect(screen.getByRole('button', { name: '-1' })).toBeDefined();
+  });
+```
+
+- Comprobación de los eventos 
+```ts
+  test('should increment the counter', () => {
+    // Arrange
+    render(<CounterApp />);
+    const heading = screen.getByRole('heading', { level: 1 });
+    const button = screen.getByRole('button', { name: '+1' });
+
+    // Act
+    fireEvent.click(button);
+
+    // Assert
+    expect(heading.innerHTML).toContain('Counter: 1');
+  });
+
+  test('should decrement the counter', () => {
+    // Arrange
+    render(<CounterApp />);
+    const heading = screen.getByRole('heading', { level: 1 });
+    const button = screen.getByRole('button', { name: '-1' });
+    screen.debug();
+
+    // Act
+    fireEvent.click(button);
+
+    // Assert
+    expect(heading.innerHTML).toContain('Counter: -1');
+  });
+```
+
