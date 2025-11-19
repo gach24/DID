@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-pokedex}
+    volumes:
+      - ./mongo:/data/db
+
+volumes:
+  mongo-data:

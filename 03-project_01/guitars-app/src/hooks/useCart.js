@@ -47,18 +47,18 @@ export const useCart = () => {
    * @param {Object} guitar - Objeto con la información de la guitarra a agregar
    * @param {number} guitar.id - ID único de la guitarra
    */
-  const addToCart = (guitar) => {
-    cart.some((item) => item.id === guitar.id) ?       
-      setCart(
-          cart.map((item) =>
-            item.id === guitar.id && item.quantity < MAX_COUNT_GUITARS
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          )
-        ) 
-      : 
-      setCart([...cart, { ...guitar, quantity: 1 }]);
-  };
+    const addToCart = (guitar) => {
+      cart.some((item) => item.id === guitar.id) ?       
+        setCart(
+            cart.map((item) =>
+              item.id === guitar.id && item.quantity < MAX_COUNT_GUITARS
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            )
+          ) 
+        : 
+        setCart([...cart, { ...guitar, quantity: 1 }]);
+    };
 
   /**
    * Elimina una guitarra del carrito por su ID
