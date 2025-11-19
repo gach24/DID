@@ -20,6 +20,11 @@ export class GuitarsController {
     return await this.guitarsService.findAll();
   }
 
+  @Get('seed')
+  async seed() {
+    return await this.guitarsService.seed();
+  }
+
   // TODO: Implementar el método findOne
   /*
   @Get(':id')

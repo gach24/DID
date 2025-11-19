@@ -4,10 +4,27 @@ import { InjectModel } from '@nestjs/mongoose';
 // import { CreateGuitarDto } from './dto/create-guitar.dto';
 // import { UpdateGuitarDto } from './dto/update-guitar.dto';
 import { Guitar } from './entities/guitar.entity';
+import { db } from 'src/data/db';
 
 @Injectable()
 export class GuitarsService {
   constructor(@InjectModel(Guitar.name) private guitarModel: Model<Guitar>) {}
+
+  async findAll() {
+    return this.guitarModel.find().exec();
+  }
+
+  async seed() {
+    await this.guitarModel.deleteMany({});
+    return this.guitarModel.insertMany(
+      db.map((g) => {
+        const { id: _, ...rest } = g;
+        return {
+          ...rest,
+        };
+      }),
+    );
+  }
 
   // TODO: Implementar el método create
   /*  
@@ -15,10 +32,6 @@ export class GuitarsService {
     return 'This action adds a new guitar';
   } 
   */
-
-  async findAll() {
-    return this.guitarModel.find().exec();
-  }
 
   // TODO: Implementar el método findOne
   /*
