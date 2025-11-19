@@ -5,7 +5,7 @@ services:
     ports:
       - 27017:27017
     environment:
-      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-pokedex}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
     volumes:
       - ./mongo:/data/db
 

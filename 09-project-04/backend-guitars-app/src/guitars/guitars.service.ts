@@ -1,9 +1,9 @@
-import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-// import { CreateGuitarDto } from './dto/create-guitar.dto';
-// import { UpdateGuitarDto } from './dto/update-guitar.dto';
+import { Model } from 'mongoose';
+
 import { Guitar } from './entities/guitar.entity';
+
 import { db } from 'src/data/db';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class GuitarsService {
 
   async seed() {
     await this.guitarModel.deleteMany({});
-    return this.guitarModel.insertMany(
+    return await this.guitarModel.insertMany(
       db.map((g) => {
         const { id: _, ...rest } = g;
         return {

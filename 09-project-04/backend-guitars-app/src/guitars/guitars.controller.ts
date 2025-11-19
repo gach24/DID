@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
+
 import { GuitarsService } from './guitars.service';
-// import { CreateGuitarDto } from './dto/create-guitar.dto';
-// import { UpdateGuitarDto } from './dto/update-guitar.dto';
 
 @Controller('guitars')
 export class GuitarsController {
