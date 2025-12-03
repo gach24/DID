@@ -12,6 +12,10 @@ import { CartContext } from "../context";
  */
 export const Guitar = ({ guitar }: {guitar: Guitar}) => {
 
+  /**
+   * Destructuración de las propiedades del carrito
+   * para acceso más sencillo en el componente
+   */
   const { addToCart } = useContext(CartContext);
 
   /**

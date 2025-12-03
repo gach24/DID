@@ -24,9 +24,9 @@ export const Header = () => {
    * @function getTotal
    * @returns Importe total del carrito en la misma unidad monetaria que `price`.
    */
-  const getTotal = () => {
-    return cart.reduce((total, {price, quantity}) => total + (price * quantity), 0);
-  }
+  const getTotal = () => 
+     cart.reduce((total, {price, quantity}) => total + (price * quantity), 0);
+  
 
   const renderCart = () => {
     return (
@@ -48,7 +48,7 @@ export const Header = () => {
         {
           /* Cart Items */
           cart.map(({ id, name, image, price, quantity }) => (
-              <tr key={id}>
+            <tr key={id}>
               <td>
                 <img
                 className="img-fluid"
