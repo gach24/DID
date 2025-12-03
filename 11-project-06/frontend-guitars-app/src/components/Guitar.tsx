@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context";
+import { Link } from "react-router";
 
 
 /**
@@ -22,7 +23,7 @@ export const Guitar = ({ guitar }: {guitar: Guitar}) => {
    * Destructuración de las propiedades de la guitarra
    * para acceso más sencillo en el componente
    */
-  const { name, image, description, price } = guitar;
+  const { id, name, image, description, price } = guitar;
 
   /**
    * Manejador de evento para el botón de agregar al carrito
@@ -37,7 +38,9 @@ export const Guitar = ({ guitar }: {guitar: Guitar}) => {
   return (
     <div className="col-md-6 col-lg-4 my-4 row align-items-center">
       <div className="col-4">
-        <img className="img-fluid" src={`/img/${image}.jpg`} alt={name} />
+        <Link to={`/${id}`}>
+          <img className="img-fluid" src={`/img/${image}.jpg`} alt={name} />
+        </Link>
       </div>
       <div className="col-8">
         <h3 className="text-black fs-4 fw-bold text-uppercase">{name}</h3>
