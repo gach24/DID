@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { HomePage, GuitarPage } from './pages/';
+import { HomePage, GuitarPage, CreateGuitarPage } from './pages/';
 import { CartProvider } from './context';
 import {
   Outlet,
@@ -14,21 +14,6 @@ import { Footer, Header } from './components';
 import './index.css';
 
 
-/* const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    loader: async () => getGuitars(),
-    HydrateFallback: () => <div>Cargando...</div>
-  },
-  {
-    path: '/:id',
-    element: <GuitarPage />,
-    loader: async ({ params }) => getGuitarsById(params.id!),
-    HydrateFallback: () => <div>Cargando...</div>
-  }
-
-]); */
 
 export const Layout = () => (
   <>
@@ -44,10 +29,14 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <HomePage />,
         loader: async () => getGuitars(),
         HydrateFallback: () => <div>Cargando...</div>
+      },
+      {
+        path: '/new',
+        element: <CreateGuitarPage />
       },
       {
         path: '/:id',

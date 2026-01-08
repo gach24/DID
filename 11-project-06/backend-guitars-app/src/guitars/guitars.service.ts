@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { Guitar } from './entities/guitar.entity';
+import { CreateGuitarDto } from './dto/create-guitar.dto';
 
 import { db } from 'src/data/db';
 
@@ -12,6 +13,10 @@ export class GuitarsService {
 
   async findAll() {
     return this.guitarModel.find().exec();
+  }
+
+  async create(createGuitarDto: CreateGuitarDto) {
+    return await this.guitarModel.create(createGuitarDto);
   }
 
   async findOne(id: string) {

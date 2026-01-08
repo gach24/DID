@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 
 import { GuitarsService } from './guitars.service';
+import { CreateGuitarDto } from './dto/create-guitar.dto';
 
 @Controller('guitars')
 export class GuitarsController {
@@ -9,6 +10,11 @@ export class GuitarsController {
   @Get()
   async findAll() {
     return await this.guitarsService.findAll();
+  }
+
+  @Post()
+  async create(@Body() createGuitarDto: CreateGuitarDto) {
+    return await this.guitarsService.create(createGuitarDto);
   }
 
   @Get('seed')
