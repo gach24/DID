@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { CartContext } from "../context";
+import { getImageUrl } from "../utils";
 
 /**
  * Componente que muestra el encabezado de la aplicación
@@ -52,7 +53,7 @@ export const Header = () => {
               <td>
                 <img
                 className="img-fluid"
-                src={`/img/${image}.jpg`}
+                src={getImageUrl(image)}
                 alt={name} />
               </td>
               <td>{name}</td>

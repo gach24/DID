@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { createGuitar } from '../../api/actions';
+import { uploadToCloudinary } from '../../utils/images/upload-to-cloudinary';
 
 interface FormData {
   name: string;
@@ -10,37 +11,41 @@ interface FormData {
   price: string;
 }
 
+
 export const CreateGuitarPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState<string>('');
+  const [fileName, setFileName] = useState<string>('');
+
 
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm<FormData>({
-    mode: 'onBlur'
+    mode: 'onSubmit'
   });
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
 
+    
     try {
       const file = data.image[0];
-      const fileName = file ? file.name.replace(/\.[^/.]+$/, '') : '';
+
+      const imageUrl = await uploadToCloudinary(file);
 
       const newGuitar = await createGuitar({
         name: data.name,
-        image: fileName,
+        image: imageUrl,
         description: data.description,
         price: Number(data.price)
       });
-      
+
       navigate(`/${newGuitar.id}`);
     } catch (error) {
-      console.error('Error al crear la guitarra:', error);
-      alert('Error al crear la guitarra');
+      console.error(error);
+
     } finally {
       setIsLoading(false);
     }
@@ -48,12 +53,7 @@ export const CreateGuitarPage = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const fileName = file.name.replace(/\.[^/.]+$/, '');
-      setSelectedFileName(fileName);
-    } else {
-      setSelectedFileName('');
-    }
+    setFileName(file ? file.name : '');
   };
 
   return (
@@ -94,12 +94,13 @@ export const CreateGuitarPage = () => {
                   onChange: handleImageChange
                 })}
               />
-              {selectedFileName && (
-                <small className="text-muted">Archivo seleccionado: {selectedFileName}</small>
+              {fileName && (
+                <small className="text-muted">Archivo seleccionado: {fileName}</small>
               )}
               {errors.image && (
                 <div className="invalid-feedback">{errors.image.message}</div>
               )}
+
             </div>
 
             <div className="mb-3">

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../context";
 import { Link } from "react-router";
+import { getImageUrl } from "../utils";
 
 
 /**
@@ -39,7 +40,7 @@ export const Guitar = ({ guitar }: {guitar: Guitar}) => {
     <div className="col-md-6 col-lg-4 my-4 row align-items-center">
       <div className="col-4">
         <Link to={`/${id}`}>
-          <img className="img-fluid" src={`/img/${image}.jpg`} alt={name} />
+          <img className="img-fluid" src={getImageUrl(image)} alt={name} />
         </Link>
       </div>
       <div className="col-8">

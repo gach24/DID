@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useLoaderData, Link } from 'react-router';
 import { CartContext } from '../../context';
+import { getImageUrl } from '../../utils';
 
 export const GuitarPage = () => {
   const guitar = useLoaderData() as Guitar;
@@ -18,7 +19,7 @@ export const GuitarPage = () => {
           <div className="col-md-6">
             <img 
               className="img-fluid" 
-              src={`/img/${image}.jpg`} 
+              src={getImageUrl(image)} 
               alt={name} 
             />
           </div>
