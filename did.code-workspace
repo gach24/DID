@@ -1,6 +1,22 @@
 {
 	"folders": [
 		{
+			"name": "01-javascript",
+			"path": "01-javascript"
+		},
+		{
+			"name": "02-tailwind",
+			"path": "02-tailwind"
+		},
+		{
+			"name": "03-project_01",
+			"path": "03-project_01"
+		},
+		{
+			"name": "04-task_01",
+			"path": "04-task_01"
+		},
+		{
 			"name": "05-project-02",
 			"path": "05-project-02"
 		},
@@ -23,6 +39,9 @@
 		{
 			"name": "11-project-06",
 			"path": "11-project-06"
+		},
+		{
+			"path": "12-project-07"
 		}
 	]
 }
