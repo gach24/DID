@@ -1,17 +1,12 @@
 import axios from 'axios';
 
+const BASE_URL = '/jasperserver/rest_v2';
 /**
  * Axios instance to make requests to the JasperReports server
  */
 const httpClient = axios.create({
-  // En desarrollo, Vite proxy maneja las peticiones a /jasperserver
-  // En producción, puedes configurar baseURL si es necesario
-  baseURL: import.meta.env.DEV ? '/jasperserver/rest_v2' : import.meta.env.VITE_BASE_URL,
+  withCredentials: true,
   headers: {
-    /* 
-     * Codifica las credenciales en Base64 para enviarlas en el header Authorization
-     * btoa(`admin:admin`)
-     */
     Authorization: `Basic ${btoa(`admin:admin`)}`,
   }
 });
@@ -25,7 +20,7 @@ export const useReports = () => {
    */
   const login = async () => {
     try {
-      const response = await httpClient.get(`/serverInfo`);
+      const response = await httpClient.get(`${BASE_URL}/serverInfo`);
       return response.status === 200;
     } catch (error: any) {
       if (error.code === 'ERR_NETWORK' || error.message?.includes('ERR_CONNECTION_REFUSED')) {
@@ -42,22 +37,37 @@ export const useReports = () => {
    * @returns List of reports
    */
   const getReports = async (): Promise<Report[]> => {
-    return (await httpClient.get('/resources?type=reportUnit&recursive=true', {
+    const response = await httpClient.get(`${BASE_URL}/resources?type=reportUnit&recursive=true`, {
       headers: {
         Accept: 'application/json',
       },
-    })).data.resourceLookup;
+    });
+    return response.data.resourceLookup;
   }
+
+
 
 
   const getReportExecution = async (reportPath: string, format = 'pdf') => {
-    const response = await axios.get(`/reports${reportPath}.${format}`, {
-        responseType: 'blob'
-    });
-    console.log(response);
 
-    return URL.createObjectURL(response.data);
+
+    try {
+      const response = await httpClient.get(`${BASE_URL}`, {
+        responseType: 'blob',
+        headers: {
+          'Accept': 'application/pdf, application/json'
+        }
+      });
+      return URL.createObjectURL(response.data);
+    } catch (error: any) {
+      if (error.response && error.response.data instanceof Blob) {
+        const text = await error.response.data.text();
+        console.error('JasperReports Error Detail:', text);
+      }
+      throw error;
+    }
   }
+
 
 
   return {

@@ -45,7 +45,6 @@ export const CreateGuitarPage = () => {
       navigate(`/${newGuitar.id}`);
     } catch (error) {
       console.error(error);
-
     } finally {
       setIsLoading(false);
     }
