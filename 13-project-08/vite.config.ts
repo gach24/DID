@@ -12,9 +12,16 @@ export default defineConfig({
   server: {
     proxy: {
       '/jasperserver': {
-        target: 'http://10.0.255.100:8080',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         secure: false,
+        configure: (proxy, _options) => {
+          proxy.on('proxyRes', (proxyRes, _req, _res) => {
+            if (proxyRes.headers['www-authenticate']) {
+              delete proxyRes.headers['www-authenticate'];
+            }
+          });
+        }
       },
     },
   },

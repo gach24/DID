@@ -51,8 +51,8 @@ export const useReports = () => {
 
 
   const getReportExecution = async (reportPath: string, format = 'pdf') => {
-    const response = await axios.get(`/reports${reportPath}.${format}`, {
-        responseType: 'blob'
+    const response = await httpClient.get(`/reports${reportPath}.${format}`, {
+      responseType: 'blob'
     });
     console.log(response);
 
