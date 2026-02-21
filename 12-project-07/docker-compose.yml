@@ -2,10 +2,10 @@ services:
   jasperdb:
     image: mariadb:latest
     environment:
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
-      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_USER=${JASPER_DB_USER}
+      - MARIADB_PASSWORD=${JASPER_DB_PASSWORD}
+      - MARIADB_DATABASE=${JASPER_DB_DATABASE}
+      - MARIADB_ROOT_PASSWORD=${JASPER_DB_ROOT_PASSWORD}
     volumes:
       - 'jasperdb_data:/var/lib/mysql'
 
@@ -17,11 +17,11 @@ services:
     environment:
       - MARIADB_HOST=jasperdb
       - MARIADB_PORT_NUMBER=3306
-      - JASPERREPORTS_DATABASE_USER=${MARIADB_USER}
-      - JASPERREPORTS_DATABASE_PASSWORD=${MARIADB_PASSWORD}
-      - JASPERREPORTS_DATABASE_NAME=${MARIADB_DATABASE}
-      - JASPERREPORTS_USERNAME=${JASPERREPORTS_USERNAME}
-      - JASPERREPORTS_PASSWORD=${JASPERREPORTS_PASSWORD}
+      - JASPERREPORTS_DATABASE_USER=${JASPER_DB_USER}
+      - JASPERREPORTS_DATABASE_PASSWORD=${JASPER_DB_PASSWORD}
+      - JASPERREPORTS_DATABASE_NAME=${JASPER_DB_DATABASE}
+      - JASPERREPORTS_USERNAME=${JASPER_REPORTS_USERNAME}
+      - JASPERREPORTS_PASSWORD=${JASPER_REPORTS_PASSWORD}
     volumes:
       - 'jrs_data:/bitnami/jasperreports'
     depends_on:
@@ -30,11 +30,12 @@ services:
   sakiladb:
     image: mariadb:latest
     environment:
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_DATABASE=sakila
-      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_USER=${SAKILA_DB_USER}
+      - MARIADB_PASSWORD=${SAKILA_DB_PASSWORD}
+      - MARIADB_DATABASE=${SAKILA_DB_DATABASE}
+      - MARIADB_ROOT_PASSWORD=${SAKILA_DB_ROOT_PASSWORD}
     volumes:
-      - 'sakiladb_data:/var/lib/mysql'
+      - 'sakila_data:/var/lib/mysql'
       - './sakila:/docker-entrypoint-initdb.d'
     ports:
       - '3306:3306'
@@ -44,5 +45,5 @@ volumes:
     driver: local
   jasperdb_data:
     driver: local
-  sakiladb_data:
+  sakila_data:
     driver: local
