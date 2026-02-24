@@ -6,7 +6,8 @@ import axios from 'axios';
 const httpClient = axios.create({
   // En desarrollo, Vite proxy maneja las peticiones a /jasperserver
   // En producción, puedes configurar baseURL si es necesario
-  baseURL: import.meta.env.DEV ? '/jasperserver/rest_v2' : import.meta.env.VITE_BASE_URL,
+  // baseURL: import.meta.env.DEV ? '/jasperserver/rest_v2' : import.meta.env.VITE_BASE_URL,
+  baseURL: 'http://localhost:8080/jasperserver/rest_v2',
   headers: {
     /* 
      * Codifica las credenciales en Base64 para enviarlas en el header Authorization
@@ -54,7 +55,6 @@ export const useReports = () => {
     const response = await httpClient.get(`/reports${reportPath}.${format}`, {
       responseType: 'blob'
     });
-    console.log(response);
 
     return URL.createObjectURL(response.data);
   }
