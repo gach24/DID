@@ -102,6 +102,12 @@ docker compose logs -f jasperdb
 docker compose logs -f sakiladb
 ```
 
+## Deshabilitar CORS
+
+```bash
+docker cp  ./web.xml 12-project-07-jrs-1:/opt/bitnami/tomcat/webapps/jasperserver/WEB-INF/web.xml
+```
+
 ## 🌐 Acceso a los Servicios
 
 ### JasperReports Server
