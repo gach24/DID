@@ -1,7 +1,7 @@
 import { Play, FileText } from "lucide-react";
 
-export const Main = ({ reportUrl }: { reportUrl: any }  ) => {
-  console.log(reportUrl);
+export const Main = ({ reportUrl }: { reportUrl: any }) => {
+
   return (
     <main className="main-content">
       <header className="main-header glass">
@@ -16,12 +16,12 @@ export const Main = ({ reportUrl }: { reportUrl: any }  ) => {
       </header>
 
       <section className="report-view">
-      {
-        /*
-        If the reportUrl is not null, show the iframe with the report
-        If the reportUrl is null, show the empty state
-        */
-        reportUrl ? (
+        {
+          /*
+          If the reportUrl is not null, show the iframe with the report
+          If the reportUrl is null, show the empty state
+          */
+          reportUrl ? (
             <iframe
               src={reportUrl}
               title="Report Viewer"

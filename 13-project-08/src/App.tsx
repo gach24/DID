@@ -11,6 +11,12 @@ function App() {
 
   const runReport = async (report: Report) => {
     try {
+      /* 
+        console.log(await getReportInputControls(report.uri))
+        const blobUrl = await getReportExecution(report.uri, 'pdf', {
+          "rating": "PG"
+        });
+      */
       const blobUrl = await getReportExecution(report.uri, 'pdf');
       setReportUrl(blobUrl);
     } catch (error) {
