@@ -7,7 +7,7 @@ const httpClient = axios.create({
   // En desarrollo, Vite proxy maneja las peticiones a /jasperserver
   // En producción, puedes configurar baseURL si es necesario
   // baseURL: import.meta.env.DEV ? '/jasperserver/rest_v2' : import.meta.env.VITE_BASE_URL,
-  baseURL: 'http://localhost:8080/jasperserver/rest_v2',
+  baseURL: '/jasperserver/rest_v2',
   headers: {
     /* 
      * Codifica las credenciales en Base64 para enviarlas en el header Authorization
@@ -30,7 +30,7 @@ export const useReports = () => {
       return response.status === 200;
     } catch (error: any) {
       if (error.code === 'ERR_NETWORK' || error.message?.includes('ERR_CONNECTION_REFUSED')) {
-        console.error('Error de conexión: El servidor JasperReports no está disponible en http://localhost:8080');
+        console.error('Error de conexión: El servidor JasperReports no está disponible a través del proxy');
       } else {
         console.error('Error en login:', error.message);
       }
@@ -51,18 +51,48 @@ export const useReports = () => {
   }
 
 
-  const getReportExecution = async (reportPath: string, format = 'pdf') => {
+  /**
+   * Execute a report and get the blob URL
+   * @param reportPath Path to the report
+   * @param format Output format (pdf, html, xls, etc.)
+   * @param params Report parameters
+   * @returns Blob URL of the executed report
+   */
+  const getReportExecution = async (reportPath: string, format = 'pdf', params?: Record<string, any>) => {
     const response = await httpClient.get(`/reports${reportPath}.${format}`, {
-      responseType: 'blob'
+      responseType: 'blob',
+      params: params
     });
 
     return URL.createObjectURL(response.data);
   }
 
 
+  /**
+   * Get the list of input controls for a report
+   * @param reportPath Path to the report
+   * @returns List of input controls
+   */
+  const getReportInputControls = async (reportPath: string) => {
+    try {
+      const response = await httpClient.get(`/reports${reportPath}/inputControls`, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+      // The response usually contains an array of input controls in response.data.inputControl
+      return response.data.inputControl || [];
+    } catch (error) {
+      console.error('Error fetching input controls:', error);
+      return [];
+    }
+  }
+
+
   return {
     login: login,
     getReports: getReports,
-    getReportExecution: getReportExecution
+    getReportExecution: getReportExecution,
+    getReportInputControls: getReportInputControls
   }
 }
