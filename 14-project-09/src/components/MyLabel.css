@@ -1,0 +1,26 @@
+.label {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.normal {
+    font-size: 14px;
+}
+.h1 {
+    font-size: 30px;
+}
+.h2 {
+    font-size: 25px;
+}
+.h3 {
+    font-size: 20px;
+}
+
+.text-primary {
+    color: #3d5a80;
+}
+.text-secondary {
+    color: #98c1d9;
+}
+.text-tertiary {
+    color: #ee6c4d;
+}
