@@ -48,5 +48,8 @@
 			"name": "13-project-08",
 			"path": "13-project-08"
 		}
-	]
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "13-project-08"
+	}
 }
