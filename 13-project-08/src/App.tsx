@@ -4,13 +4,24 @@ import { Main } from './components/Main';
 import { useReports } from './hooks/useReports';
 import Swal from 'sweetalert2';
 
+/**
+ * Main application component for listing and executing JasperReports.
+ * @returns Root layout with sidebar and report preview panel.
+ */
 function App() {
   const { getReports, getReportExecution, getReportInputControls } = useReports();
   const [reports, setReports] = useState<Report[]>([]);
   const [reportUrl, setReportUrl] = useState<string | null>(null);
 
 
-  const runReport = async (report: Report) => {
+  
+  /**
+   * Executes the selected report and sets the generated preview URL.
+   * If the report has input controls, it requests parameter values using a modal.
+   * @param report Selected report metadata.
+   * @returns Promise resolved when report execution finishes.
+   */
+  const runReport = async (report: Report): Promise<void> => {
     try {
       /* 
         console.log(await getReportInputControls(report.uri))

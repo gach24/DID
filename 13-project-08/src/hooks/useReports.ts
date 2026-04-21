@@ -24,7 +24,7 @@ export const useReports = () => {
    * Only use to check if the server is available
    * @returns True if the login is successful, false otherwise
    */
-  const login = async () => {
+  const login = async (): Promise<boolean> => {
     try {
       const response = await httpClient.get(`/serverInfo`);
       return response.status === 200;
@@ -58,7 +58,11 @@ export const useReports = () => {
    * @param params Report parameters
    * @returns Blob URL of the executed report
    */
-  const getReportExecution = async (reportPath: string, format = 'pdf', params?: Record<string, any>) => {
+  const getReportExecution = async (
+    reportPath: string,
+    format = 'pdf',
+    params?: Record<string, any>
+  ): Promise<string> => {
     const response = await httpClient.get(`/reports${reportPath}.${format}`, {
       responseType: 'blob',
       params: params
@@ -73,7 +77,7 @@ export const useReports = () => {
    * @param reportPath Path to the report
    * @returns List of input controls
    */
-  const getReportInputControls = async (reportPath: string) => {
+  const getReportInputControls = async (reportPath: string): Promise<any[]> => {
     try {
       const response = await httpClient.get(`/reports${reportPath}/inputControls`, {
         headers: {

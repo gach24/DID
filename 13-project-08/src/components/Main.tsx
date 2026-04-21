@@ -1,5 +1,10 @@
 import { Play, FileText } from "lucide-react";
 
+/**
+ * Main content component that renders the selected report preview.
+ * @param reportUrl Blob URL for the rendered report. When null, shows empty state.
+ * @returns Main report preview section.
+ */
 export const Main = ({ reportUrl }: { reportUrl: any }) => {
 
   return (

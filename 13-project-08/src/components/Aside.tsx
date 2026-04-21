@@ -1,6 +1,12 @@
 import { FileText, Loader2, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
+/**
+ * Sidebar component that displays the available reports.
+ * @param reports List of available reports.
+ * @param onSelectReport Callback invoked when a report is selected.
+ * @returns Sidebar UI with reports list.
+ */
 export const Aside = ({
   reports,
   onSelectReport,
@@ -10,7 +16,12 @@ export const Aside = ({
 }) => {
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
-  const handleSelectReport = async (report: Report) => {
+  /**
+   * Handles report selection from the list and propagates it to the parent.
+   * @param report Selected report metadata.
+   * @returns Promise resolved after updating local state and invoking callback.
+   */
+  const handleSelectReport = async (report: Report): Promise<void> => {
     setSelectedReport(report);
     onSelectReport(report);
   };
