@@ -769,7 +769,6 @@ Trade-offs:
 - El usuario necesita **internet** al instalar.
 - Tienes que subir el paquete (`*.7z`) a un servidor y configurar
   `publish` (S3, GitHub Releases, URL genérica...).
-- Si los alumnos instalan offline, no compensa.
 
 ### A.4. Excluir basura de `node_modules`
 
