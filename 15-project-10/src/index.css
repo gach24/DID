@@ -1,0 +1,165 @@
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.92);
+  background-color: #1a1a1a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+#root {
+  width: 100%;
+  max-width: 560px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.9rem;
+}
+
+.task-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.task-form input {
+  flex: 1;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #242424;
+  color: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-form input:focus {
+  border-color: #646cff;
+}
+
+button {
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: #646cff;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+button:hover:not(:disabled) {
+  background: #535bf2;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  background: #242424;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+.task-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+  cursor: pointer;
+}
+
+.task-item input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #646cff;
+  cursor: pointer;
+}
+
+.task-item.done span {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-remove {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+}
+
+.btn-remove:hover:not(:disabled) {
+  background: transparent;
+  color: #ff6b6b;
+}
+
+.empty {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 1.5rem 0;
+  margin: 0;
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-clear {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
+}
+
+.btn-clear:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+}
