@@ -724,6 +724,148 @@ nada. Más cómodo para entornos corporativos.
 
 ---
 
+## Apéndice: reducir el tamaño del instalador
+
+El instalador de Electron parte de un suelo de ~70-80 MB (Chromium pesa
+lo que pesa). Si ves un `.exe` de 100-200 MB, normalmente puedes
+recortarlo bastante con estas opciones de `electron-builder`. De mayor
+a menor impacto:
+
+### A.1. Compresión LZMA al máximo (gratis, ~10-15%)
+
+En el bloque `build` de `package.json`:
+
+```json
+"compression": "maximum"
+```
+
+Por defecto es `normal`. `maximum` tarda más en empaquetar pero genera
+un `.exe` más pequeño.
+
+### A.2. Quitar locales de Chromium que no usas (~20-25 MB)
+
+Lo más rentable. Electron incluye ~50 ficheros `.pak` (uno por idioma)
+en `release/win-unpacked/locales/`. Si solo te importan español e
+inglés:
+
+```json
+"electronLanguages": ["en-US", "es"]
+```
+
+### A.3. `nsis-web`: instalador *downloader* (~3 MB en vez de ~100 MB)
+
+El `.exe` deja de incluir la app y se descarga el paquete real al
+instalar:
+
+```json
+"win": {
+  "target": [{ "target": "nsis-web", "arch": ["x64"] }],
+  "icon": "build/icon.ico"
+}
+```
+
+Trade-offs:
+
+- El usuario necesita **internet** al instalar.
+- Tienes que subir el paquete (`*.7z`) a un servidor y configurar
+  `publish` (S3, GitHub Releases, URL genérica...).
+- Si los alumnos instalan offline, no compensa.
+
+### A.4. Excluir basura de `node_modules`
+
+Por defecto se cuelan READMEs, source maps y tests de las
+dependencies. Añade exclusiones al `files`:
+
+```json
+"files": [
+  "dist/**/*",
+  "electron/**/*",
+  "package.json",
+  "!**/*.{md,map,d.ts,ts,tsx}",
+  "!**/{LICENSE,CHANGELOG.md,README.md}",
+  "!**/test/**",
+  "!**/tests/**",
+  "!**/__tests__/**"
+]
+```
+
+Ahorro típico: 5-10 MB.
+
+### A.5. Desactivar `differentialPackage` si no auto-actualizas
+
+Genera un `.blockmap` para `electron-updater`. Si no lo usas, fuera:
+
+```json
+"nsis": {
+  "differentialPackage": false
+}
+```
+
+Ahorro mínimo, pero no aporta nada dejarlo activo.
+
+### A.6. Combo recomendado para esta práctica
+
+```json
+"build": {
+  "appId": "com.did.taskapp",
+  "productName": "Task App",
+  "asar": true,
+  "compression": "maximum",
+  "electronLanguages": ["en-US", "es"],
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "package.json",
+    "!**/*.{md,map,d.ts}",
+    "!**/{LICENSE,CHANGELOG.md,README.md}"
+  ],
+  "directories": { "output": "release", "buildResources": "build" },
+  "win": { "target": ["nsis"], "icon": "build/icon.ico" },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Task App",
+    "runAfterFinish": true,
+    "deleteAppDataOnUninstall": false,
+    "differentialPackage": false
+  }
+}
+```
+
+Resultado esperado: bajar de ~100 MB a **~70-75 MB**.
+
+### A.7. Inspeccionar qué hay dentro del instalador
+
+Si el `.exe` pesa más de la cuenta, mira qué se está colando:
+
+```powershell
+# Tamaño real del .exe
+Get-ChildItem release\*.exe | Select Name, Length
+
+# Tamaño de la carpeta unpacked (siempre mayor que el .exe)
+Get-ChildItem release\win-unpacked -Recurse | Measure-Object -Sum Length
+
+# Listar el contenido del asar (tu código React empaquetado)
+npx asar list release\win-unpacked\resources\app.asar
+```
+
+### A.8. Alternativas a Electron si necesitas instaladores muy pequeños
+
+Para apps que tienen que pesar 5-10 MB, Electron no es la herramienta:
+
+- **Tauri** (Rust + WebView nativo del SO): instalador de 5-10 MB,
+  reutilizas tu código React. En Windows usa Edge WebView2 en vez de
+  Chromium, así que algunas APIs difieren.
+- **Neutralino**, **Wails**: filosofía similar.
+
+Para una app de aula con Electron, los puntos A.1 + A.2 + A.4 te dejan
+un instalador razonable sin cambiar de stack.
+
+---
+
 ## Scripts disponibles
 
 ```bash
